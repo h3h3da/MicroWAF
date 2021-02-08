@@ -34,3 +34,9 @@ BLACK_IP_LIST = [
     "",
 ]
 
+sqlconfig = {
+    "user": "root",
+    "password": "huyuyi20011111",
+    "host": "localhost",
+    "database": "waf"
+}

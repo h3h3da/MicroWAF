@@ -2,7 +2,8 @@
 # -*- coding:utf-8 -*-
 
 import re
-from rexrules import Rules
+from sql import query_rule
+# from rexrules import Rules
 
 
 class Detect:
@@ -35,6 +36,7 @@ class Detect:
             "type": []
         }
         print("uri ", self.uri)
+        Rules = query_rule()
         for rule in Rules:
             res = re.compile(Rules[rule]["rex"]).findall(self.uri)
             print("1: ", res)
