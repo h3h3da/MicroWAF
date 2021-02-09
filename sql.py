@@ -1,4 +1,7 @@
+# 直接运行该脚本可创建相应数据库
 import mysql.connector
+import copy
+from rexrules import Rules
 from config import sqlconfig
 
 # 连接数据库
@@ -10,11 +13,40 @@ def connect(conf):
     else:
         return cnx
 
-# 创建规则数据库
-def initrulesql(Rules):
+# 创建数据库waf
+def initsql_waf():
+    config = copy.copy(sqlconfig)
+    config.pop('database')
+    conn = connect(config)
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute("SHOW DATABASES")
+    except mysql.connector.Error as err:
+        print(err)
+
+    database = cursor.fetchall()
+
+    if ('waf',) in database:
+        pass
+    else:
+        print("创建数据库waf")
+        try:
+            cursor.execute("CREATE DATABASE waf")
+            conn.commit()
+        except mysql.connector.Error as err:
+            print(err)
+
+    cursor.close()
+    conn.close()
+
+
+# 创建rule表
+def initsql_rule(Rules):
     conn = connect(sqlconfig)
     cursor = conn.cursor()
-    
+
+    # rule表
     table_sql = """
     CREATE TABLE `rule`  (
     `id` int NOT NULL AUTO_INCREMENT,
@@ -26,20 +58,24 @@ def initrulesql(Rules):
     PRIMARY KEY (`id`));
     """
 
+    # 插入rule
     insert_sql = """
     INSERT INTO `rule` (`name`,`rex`,`type`,`risk_level`) VALUES (%s,%s,%s,%s)
     """
 
+    #查询表
     try:
         cursor.execute("SHOW TABLES")
     except mysql.connector.Error as err:
         print(err)
-    tables = cursor.fetchone()
-    # 创建数据库
-    if "rule" in tables:
+
+    tables = cursor.fetchall()
+
+    # 创建rule表
+    if ('rule',) in tables:
         pass
     else:
-        print("创建数据库")
+        print("创建表rule")
         try:
             cursor.execute(table_sql)
         except mysql.connector.Error as err:
@@ -51,6 +87,7 @@ def initrulesql(Rules):
                 conn.commit()
             except mysql.connector.Error as err:
                 print(err)
+
     cursor.close()
     conn.close()
 
@@ -60,13 +97,21 @@ def query_rule():
     Rules = {}
     conn = connect(sqlconfig)
     cursor = conn.cursor()
+
     try:
         cursor.execute("SELECT name, type, rex, risk_level FROM rule")
     except mysql.connector.Error as err:
         print(err)
+
     result = cursor.fetchall()
+
     for rule in result:
         Rules[rule[0]] = {"name": rule[1], "rex": rule[2], "risk_level": rule[3]}
+
     cursor.close()
     conn.close()
     return Rules
+
+if __name__ == '__main__':
+    initsql_waf()
+    initsql_rule(Rules)
