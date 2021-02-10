@@ -2,8 +2,8 @@
 # -*- coding:utf-8 -*-
 
 import re
-from sql import query_rule
-# from rexrules import Rules
+#from sql import query_rule
+from rexrules import Rules
 
 
 class Detect:
@@ -36,28 +36,31 @@ class Detect:
             "type": []
         }
         print("uri ", self.uri)
-        Rules = query_rule()
+        #Rules = query_rule()
         for rule in Rules:
-            res = re.compile(Rules[rule]["rex"]).findall(self.uri)
+            res = re.compile(Rules[rule]["rex"], re.IGNORECASE).findall(self.uri)
             print("1: ", res)
             if res:
                 print(self.uri)
                 result["status"] = result["status"] or True
                 result["type"].append(Rules[rule]["name"])
 
-            res = re.compile(Rules[rule]["rex"]).findall(self.user_agent)
+            res = re.compile(Rules[rule]["rex"],
+                             re.IGNORECASE).findall(self.user_agent)
             print("2: ", res)
             if res:
                 result["status"] = result["status"] or True
                 result["type"].append(Rules[rule]["name"])
 
-            res = re.compile(Rules[rule]["rex"]).findall(self.cookie)
+            res = re.compile(Rules[rule]["rex"],
+                             re.IGNORECASE).findall(self.cookie)
             print("3: ", res)
             if res:
                 result["status"] = result["status"] or True
                 result["type"].append(Rules[rule]["name"])
 
-            res = re.compile(Rules[rule]["rex"]).findall(self.body)
+            res = re.compile(Rules[rule]["rex"],
+                             re.IGNORECASE).findall(self.body)
             print("4: ", res)
 
             if res:
@@ -66,4 +69,3 @@ class Detect:
                 result["type"].append(Rules[rule]["name"])
 
         return result
-

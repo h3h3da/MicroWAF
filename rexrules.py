@@ -1,7 +1,7 @@
 Rules = {
     "SQLREX": {
         "name": "SQL注入",
-        "rex":"select|insert|delete|\\/\\*|\\*|\\.\\.\\/|\\.\\/|union|into|load_file|outfile|dump|group|substr|database|trancate|chr|ascii|declare",
+        "rex":"select|insert|delete|\\/\\*|\\*|\\.\\.\\/|\\.\\/|union|into|load_file|outfile|dump|group|substr|database|trancate|chr|ascii|declare|concat|and|sleep|from",
         "risk_level": "high"
     },
     "XSSREX": {
