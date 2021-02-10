@@ -101,7 +101,7 @@ def connecting(conn, addr):
 def run():
     s = socket.socket()
     s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    s.bind(('0.0.0.0', 2333))
+    s.bind(('0.0.0.0', 80))
     s.listen(5)
     try:
         while 1:
