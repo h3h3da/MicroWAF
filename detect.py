@@ -2,8 +2,8 @@
 # -*- coding:utf-8 -*-
 
 import re
-#from sql import query_rule
-from rexrules import Rules
+from sql import query_rule
+#from rexrules import Rules
 
 
 class Detect:
@@ -33,38 +33,40 @@ class Detect:
         '''检查url user-agent cookie body'''
         result = {
             "status": False,
-            "type": []
+            "type": [],
+            "url": ""
         }
         print("uri ", self.uri)
-        #Rules = query_rule()
+        result["url"] = self.uri
+        Rules = query_rule()
         for rule in Rules:
             res = re.compile(Rules[rule]["rex"], re.IGNORECASE).findall(self.uri)
-            print("1: ", res)
+            # print("1: ", res)
             if res:
-                print(self.uri)
+                # print(self.uri)
                 result["status"] = result["status"] or True
                 result["type"].append(Rules[rule]["name"])
 
             res = re.compile(Rules[rule]["rex"],
                              re.IGNORECASE).findall(self.user_agent)
-            print("2: ", res)
+            # print("2: ", res)
             if res:
                 result["status"] = result["status"] or True
                 result["type"].append(Rules[rule]["name"])
 
             res = re.compile(Rules[rule]["rex"],
                              re.IGNORECASE).findall(self.cookie)
-            print("3: ", res)
+            # print("3: ", res)
             if res:
                 result["status"] = result["status"] or True
                 result["type"].append(Rules[rule]["name"])
 
             res = re.compile(Rules[rule]["rex"],
                              re.IGNORECASE).findall(self.body)
-            print("4: ", res)
+            # print("4: ", res)
 
             if res:
-                print(self.body)
+                # print(self.body)
                 result["status"] = result["status"] or True
                 result["type"].append(Rules[rule]["name"])
 

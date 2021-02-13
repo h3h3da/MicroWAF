@@ -7,6 +7,7 @@ from threading import Thread
 from config import *
 from parse import Request
 from detect import Detect
+from log import log_block
 
 
 def filter(r, addr):
@@ -63,8 +64,8 @@ def connecting(conn, addr):
     result = filter(r, addr)
     if result["status"]:
         conn.close()
-        src_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        # log_block(addr, r, result["type"], src_time)
+        # src_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        log_block(addr, r, result)
         return
 
     # 向web服务器转发请求，将web服务器返回内容送回客户端

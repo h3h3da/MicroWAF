@@ -34,7 +34,9 @@ BLACK_IP_LIST = [
     "",
 ]
 
-sqlconfig = {
+LOG_PATH = 'Log'
+
+SQL_CONFIG = {
     "user": "root",
     "password": "12345678",
     "host": "localhost",
