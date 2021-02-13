@@ -3,7 +3,7 @@
 
 import re
 from sql import query_rule
-# from rexrules import Rules
+#from rexrules import Rules
 
 
 class Detect:
@@ -33,37 +33,41 @@ class Detect:
         '''检查url user-agent cookie body'''
         result = {
             "status": False,
-            "type": []
+            "type": [],
+            "url": ""
         }
-        print("uri ", self.uri)
+        #print("uri ", self.uri)
+        result["url"] = self.uri
         Rules = query_rule()
         for rule in Rules:
-            res = re.compile(Rules[rule]["rex"]).findall(self.uri)
-            print("1: ", res)
+            res = re.compile(Rules[rule]["rex"], re.IGNORECASE).findall(self.uri)
+            # print("1: ", res)
             if res:
-                print(self.uri)
+                # print(self.uri)
                 result["status"] = result["status"] or True
                 result["type"].append(Rules[rule]["name"])
 
-            res = re.compile(Rules[rule]["rex"]).findall(self.user_agent)
-            print("2: ", res)
-            if res:
-                result["status"] = result["status"] or True
-                result["type"].append(Rules[rule]["name"])
-
-            res = re.compile(Rules[rule]["rex"]).findall(self.cookie)
-            print("3: ", res)
+            res = re.compile(Rules[rule]["rex"],
+                             re.IGNORECASE).findall(self.user_agent)
+            # print("2: ", res)
             if res:
                 result["status"] = result["status"] or True
                 result["type"].append(Rules[rule]["name"])
 
-            res = re.compile(Rules[rule]["rex"]).findall(self.body)
-            print("4: ", res)
+            res = re.compile(Rules[rule]["rex"],
+                             re.IGNORECASE).findall(self.cookie)
+            # print("3: ", res)
+            if res:
+                result["status"] = result["status"] or True
+                result["type"].append(Rules[rule]["name"])
+
+            res = re.compile(Rules[rule]["rex"],
+                             re.IGNORECASE).findall(self.body)
+            # print("4: ", res)
 
             if res:
-                print(self.body)
+                # print(self.body)
                 result["status"] = result["status"] or True
                 result["type"].append(Rules[rule]["name"])
 
         return result
-

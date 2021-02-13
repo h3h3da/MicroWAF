@@ -7,6 +7,7 @@ from threading import Thread
 from config import *
 from parse import Request
 from detect import Detect
+from log import log_block
 
 
 def filter(r, addr):
@@ -29,7 +30,7 @@ def filter(r, addr):
             return {"status": False}
 
     # result = {"status": False}
-    print("result: ", result)
+    # print("result: ", result)
     return result
 
 
@@ -61,10 +62,9 @@ def connecting(conn, addr):
         return
 
     result = filter(r, addr)
+    log_block(addr, result)
     if result["status"]:
         conn.close()
-        src_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        # log_block(addr, r, result["type"], src_time)
         return
 
     # 向web服务器转发请求，将web服务器返回内容送回客户端
@@ -101,7 +101,7 @@ def connecting(conn, addr):
 def run():
     s = socket.socket()
     s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    s.bind(('0.0.0.0', 2333))
+    s.bind(('0.0.0.0', 80))
     s.listen(5)
     try:
         while 1:

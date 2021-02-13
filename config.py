@@ -5,7 +5,7 @@
 WAF_IP = "127.0.0.1"
 
 #WEB服务器ip及端口
-WEB_IP = "192.168.2.128"
+WEB_IP = "127.0.0.1"
 WEB_PORT = 8000
 
 #URI白名单选项  True为开启  False为关闭
@@ -34,7 +34,9 @@ BLACK_IP_LIST = [
     "",
 ]
 
-sqlconfig = {
+LOG_PATH = 'Log'
+
+SQL_CONFIG = {
     "user": "root",
     "password": "12345678",
     "host": "localhost",
