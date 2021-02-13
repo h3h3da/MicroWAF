@@ -62,10 +62,9 @@ def connecting(conn, addr):
         return
 
     result = filter(r, addr)
+    log_block(addr, result)
     if result["status"]:
         conn.close()
-        # src_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        log_block(addr, r, result)
         return
 
     # 向web服务器转发请求，将web服务器返回内容送回客户端

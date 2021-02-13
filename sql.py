@@ -2,7 +2,7 @@
 import mysql.connector
 import copy
 from rexrules import Rules
-from config import sqlconfig
+from config import SQL_CONFIG
 
 # 连接数据库
 def connect(conf):
@@ -15,7 +15,7 @@ def connect(conf):
 
 # 创建数据库waf
 def initsql_waf():
-    config = copy.copy(sqlconfig)
+    config = copy.copy(SQL_CONFIG)
     config.pop('database')
     conn = connect(config)
     cursor = conn.cursor()
@@ -43,7 +43,7 @@ def initsql_waf():
 
 # 创建rule表
 def initsql_rule(Rules):
-    conn = connect(sqlconfig)
+    conn = connect(SQL_CONFIG)
     cursor = conn.cursor()
 
     # rule表
@@ -95,7 +95,7 @@ def initsql_rule(Rules):
 # 查询waf规则
 def query_rule():
     Rules = {}
-    conn = connect(sqlconfig)
+    conn = connect(SQL_CONFIG)
     cursor = conn.cursor()
 
     try:

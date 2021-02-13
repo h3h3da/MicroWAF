@@ -36,7 +36,7 @@ class Detect:
             "type": [],
             "url": ""
         }
-        print("uri ", self.uri)
+        #print("uri ", self.uri)
         result["url"] = self.uri
         Rules = query_rule()
         for rule in Rules:
