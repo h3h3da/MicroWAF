@@ -30,7 +30,7 @@ def filter(r, addr):
             return {"status": False}
 
     # result = {"status": False}
-    print("result: ", result)
+    # print("result: ", result)
     return result
 
 

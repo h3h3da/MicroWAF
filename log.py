@@ -5,7 +5,7 @@ from pathlib import Path
 
 
 def log_block(addr, result):
-    Format = "<green>{time:YYYY-MM-DD  HH:mm:ss}</green> | {level} | <level>{message}<\level>"
+    Format = "<green>{time:YYYY-MM-DD  HH:mm:ss}</green> | {level} | <level>{message}</level>"
     path = Path(LOG_PATH)
     if not path.exists():
         path.mkdir(parents=True)
