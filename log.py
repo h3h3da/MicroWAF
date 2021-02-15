@@ -21,5 +21,5 @@ def log_block(addr, result):
     if result["status"] == True:
         logger.warning("{type} | {addr} | {url}", addr=addr, type=result["type"], url=result["url"])
     elif result["status"] == False:
-        logger.success("pass | {type} | {url}", addr=addr, url=result["url"])
+        logger.success("pass | {addr} | {url}", addr=addr, url=result["url"])
     logger.remove(i)
