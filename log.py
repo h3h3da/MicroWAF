@@ -11,7 +11,7 @@ def log_block(addr, result):
         path.mkdir(parents=True)
     log_name = Path(path, '{time:YYYY-MM-DD}.log')
 
-    logger.add(log_name,
+    i = logger.add(log_name,
                rotation="00:00",
                retention="30 days",
                level="SUCCESS",
@@ -22,3 +22,4 @@ def log_block(addr, result):
         logger.warning("{type} | {addr} | {url}", addr=addr, type=result["type"], url=result["url"])
     elif result["status"] == False:
         logger.success("pass | {type} | {url}", addr=addr, url=result["url"])
+    logger.remove(i)
