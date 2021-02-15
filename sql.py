@@ -1,4 +1,5 @@
 # 直接运行该脚本可创建相应数据库
+from os import pathsep
 import mysql.connector
 import copy
 from rexrules import Rules
@@ -91,6 +92,60 @@ def initsql_rule(Rules):
     cursor.close()
     conn.close()
 
+def initsql_log():
+    conn = connect(SQL_CONFIG)
+    cursor = conn.cursor()
+
+    table_sql = """
+    CREATE TABLE `log`  (
+    `id` int NOT NULL AUTO_INCREMENT,
+    `path` varchar(255) NOT NULL,
+    `timestamp` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
+    PRIMARY KEY (`id`));
+    """
+
+    try:
+        cursor.execute("SHOW TABLES")
+    except mysql.connector.Error as err:
+        print(err)
+
+    tables = cursor.fetchall()
+
+    # 创建rule表
+    if ('log', ) in tables:
+        pass
+    else:
+        print("创建表log")
+        try:
+            cursor.execute(table_sql)
+        except mysql.connector.Error as err:
+            print(err)
+
+    cursor.close()
+    conn.close()
+
+
+def insert_log(fileaddr):
+    conn = connect(SQL_CONFIG)
+    cursor = conn.cursor()
+
+    insert_sql = """
+    INSERT INTO `log` (`path`) VALUES (%s)
+    """
+
+    try:
+        cursor.execute("SELECT path FROM log")
+    except mysql.connector.Error as err:
+        print(err)
+    paths = cursor.fetchall()
+    if (fileaddr,) not in paths:
+        try:
+            cursor.execute(insert_sql,(fileaddr,))
+            conn.commit()
+        except mysql.connector.Error as err:
+            print(err)
+    cursor.close()
+    conn.close()
 
 # 查询waf规则
 def query_rule():
@@ -115,3 +170,4 @@ def query_rule():
 if __name__ == '__main__':
     initsql_waf()
     initsql_rule(Rules)
+    initsql_log()

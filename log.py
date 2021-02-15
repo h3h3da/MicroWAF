@@ -1,17 +1,19 @@
-from os import mkdir
+import time
+import pathlib
 from loguru import logger
 from config import LOG_PATH
-from pathlib import Path
+from sql import insert_log
 
 
 def log_block(addr, result):
-    Format = "<green>{time:YYYY-MM-DD  HH:mm:ss}</green> | {level} | <level>{message}</level>"
-    path = Path(LOG_PATH)
+    Format = "<green>{time:YYYY-MM-DD HH:mm:ss}</green> | {level} | <level>{message}</level>"
+    path = pathlib.Path(LOG_PATH)
     if not path.exists():
         path.mkdir(parents=True)
-    log_name = Path(path, '{time:YYYY-MM-DD}.log')
-
-    i = logger.add(log_name,
+    filename = time.strftime("%Y-%m-%d", time.localtime()) + '.log'
+    logfile = pathlib.Path(path, filename)
+    insert_log(logfile)
+    i = logger.add(logfile,
                rotation="00:00",
                retention="30 days",
                level="SUCCESS",
