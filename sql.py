@@ -50,7 +50,7 @@ def initsql_rule(Rules):
     # rule表
     table_sql = """
     CREATE TABLE `rule`  (
-    `id` int NOT NULL AUTO_INCREMENT,
+    `id` varchar(255) NOT NULL,
     `name` varchar(255) NOT NULL,
     `rex` varchar(255) NOT NULL,
     `timestamp` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
@@ -61,7 +61,7 @@ def initsql_rule(Rules):
 
     # 插入rule
     insert_sql = """
-    INSERT INTO `rule` (`name`,`rex`,`type`,`risk_level`) VALUES (%s,%s,%s,%s)
+    INSERT INTO `rule` (`id`,`name`,`rex`,`type`,`risk_level`) VALUES (UUID(),%s,%s,%s,%s)
     """
 
     #查询表
